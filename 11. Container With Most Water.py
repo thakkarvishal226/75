@@ -7,7 +7,7 @@ class Solution:
             print(min_length*(right-(left)))
             if min_length*(right-(left)) > max_val:
                 max_val = min_length*(right-(left))
-            if right < left:
+            if height[right] < height[left]:
                 right -= 1
             else:
                 left += 1
