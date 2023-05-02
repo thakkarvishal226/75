@@ -1,18 +1,17 @@
 class Solution:
     def findMaxAverage(self, nums, k: int) -> float:
-        size = k // 2
-        avg = 0
-        max = float("-inf")
-        if len(nums) == 1:
-            return nums[0]
-        for i in range(size,len(nums)-size+1):
-            avg = sum(nums[i-size:i+(size if size>0 else 1)+1])/k
-            max = avg if avg > max else max
-        return max
+        s = sum(nums[:k])
+        mymax = s
+        for i in range(1,len(nums)-k+1):
+            s = (s - nums[i-1] + nums[k+i-1])
+            mymax = max(s,mymax)
+        return mymax/k
+
+
 
 
 if __name__ == "__main__":
-    nums = [3,3,4,3,0]
-    k = 3
+    nums = [0,4,0,3,2]
+    k = 1
     obj = Solution()
     print(obj.findMaxAverage(nums,k))
