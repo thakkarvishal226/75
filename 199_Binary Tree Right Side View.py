@@ -12,7 +12,20 @@ class TreeNode:
         return f"{self.val}"
 class Solution:
     def rightSideView(self, root: TreeNode):
-        pass
+        queue = [root] if root else []
+        right_value = []
+        while queue:
+            t = queue.copy()
+            queue.clear()
+            for i in t:
+                if i.left:
+                    queue.append(i.left)
+                if i.right:
+                    queue.append(i.right)
+            right_value.append(i.val)
+        return right_value
+
+                
 
 
 
@@ -25,19 +38,21 @@ class TestCase(unittest.TestCase):
         return super().setUp()
     
     def test_case1(self):
-        Tree1 = TreeNode(4,TreeNode(2,TreeNode(1,TreeNode(3))),TreeNode(7))
-        self.assertEqual(self.obj.rightSideView(Tree1),[4,7,3],"Fail")
+        Tree1 = TreeNode(1,TreeNode(2,None,TreeNode(5)),TreeNode(3,None,TreeNode(4)))
+        self.assertEqual(self.obj.rightSideView(Tree1),[1,3,4],"Fail")
 
     def test_case2(self):
         Tree1 = TreeNode(18,TreeNode(2),TreeNode(22,None,TreeNode(63)))
-        self.assertEqual(self.obj.rightSideView(Tree1),[18,2,22],"Fail")
+        self.assertEqual(self.obj.rightSideView(Tree1),[18,22,63],"Fail")
 
-    # def test_case3(self):
-    #     Tree1 = TreeNode(1)
-    #     self.assertEqual(self.obj.longestZigZag(Tree1),1,"Fail")
+    def test_case3(self):
+        Tree1 = TreeNode(1,None,TreeNode(3))
+        self.assertEqual(self.obj.rightSideView(Tree1),[1,3],"Fail")
 
+    def test_case3(self):
+            Tree1 = None
+            self.assertEqual(self.obj.rightSideView(None),[],"Fail")
 
 if __name__ == "__main__":
-    #unittest.main()
-    salary = [4000,3000,1000,2000]
-    print()
+    unittest.main()
+    
