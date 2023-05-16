@@ -3,6 +3,7 @@ import unittest
 class Solution:
     def canVisitAllRooms(self, rooms) -> bool:
         pass
+        
 
 
 
