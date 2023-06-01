@@ -15,29 +15,42 @@ Return the total cost to hire exactly k workers.
 
 class Solution:
     def totalCost(self, costs, k: int, candidates: int) -> int:
-        firstheap =costs[:candidates]
-        lastheap = costs[candidates:]
-        heapq.heapify(firstheap)
-        heapq.heapify(lastheap)
-        costsum = 0
-        fpoint = candidates
-        lpoint = len(costs) - len(lastheap)
-        for i in range(1,k+1):
-            if firstheap[0] <= lastheap[0]:
-                costsum += heapq.heappop(firstheap)
-                if candidates+i < len(costs) and fpoint < lpoint:
-                    heapq.heappush(firstheap,costs[fpoint])
-                    fpoint+=1
-            else:
-                costsum += heapq.heappop(lastheap)
-                if len(costs) - (candidates+i) < len(costs) and lpoint > fpoint:
-                    heapq.heappush(lastheap,costs[lpoint])
-                    lpoint-=1
-        return costsum
+        output = 0
+        heap = []
+        
+        l, r = 0, len(costs) - 1
+        j = candidates
+        while l <= r and j:
+            heapq.heappush(heap, (costs[l], l))
+            # If l and r point to the same cell in costs don't push it twice
+            if l != r:
+                heapq.heappush(heap, (costs[r], r))
+            l += 1
+            r -= 1
+            j -= 1
+
+        while k:
+            val, idx = heapq.heappop(heap)
+            output += val
+            if l <= r:
+                # After every hire a new spot in the hiring pool opens we need to fill
+                # We must figure out if the last candidate that was popped was from the left side
+                # or the right side
+                if abs(idx - l) <= abs(idx - r):
+                    heapq.heappush(heap, (costs[l], l))
+                    l += 1
+                else:
+                    heapq.heappush(heap, (costs[r], r))
+                    r -= 1
+        
+            k -= 1
+            
+        
+        return output 
             
 
 
 if __name__ == "__main__":
     obj = Solution()
-    print(obj.totalCost([1,2,4,1],3,3))
+    print(obj.totalCost([31,25,72,79,74,65,84,91,18,59,27,9,81,33,17,58],11,2))
         
