@@ -1,22 +1,29 @@
 import unittest
+from collections import defaultdict
+import numpy as np
+
 class Solution:
     def equalPairs(self, grid) -> int:
-        j = len(grid)
-        count = 0
-        my_map1 = []
-        my_map2 = []
-        if len(grid) == 2:
-            if (grid[0][0] - grid[1][1]) ==0 and (grid[0][1] - grid[1][0]) == 0:
-                return 2
-        for i in range(j):
-            my_map1.append(grid[i][i])
-            my_map2.append(grid[i][j-i-1])
-        my_map1= sorted(my_map1)
-        my_map2= sorted(my_map2)
-        for i,j in zip(my_map1,my_map2):
-            if i == j:
-                count+=1
-        return count
+        row_hash = defaultdict(dict)
+
+        for i in grid:
+            row_ = "#".join([str(j) for j in i ])
+            if not row_ in row_hash.keys():
+                row_hash[row_] = 1
+            else:
+                row_hash[row_]  += 1
+        ans = 0
+        for col in zip(*grid):
+            col_ = "#".join([str(j) for j in col ])
+            if col_ in row_hash.keys():
+                ans += row_hash[col_]
+        return ans
+
+
+
+        
+        
+        
 
         #print(my_map)
 
